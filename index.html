@@ -1,1 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Australia's Tourism Story — 2025</title>
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-pale: #F5E6C0;
+    --cream: #F9F3E6;
+    --dark: #0D0B08;
+    --dark2: #16130D;
+    --dark3: #1F1B12;
+    --dark4: #2A2418;
+    --mid: #3D3525;
+    --text-main: #EDE4D0;
+    --text-muted: #9A8C6E;
+    --accent-teal: #4E9E94;
+    --accent-rose: #C46E5A;
+    --accent-blue: #5A8EBF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text-main);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 100%, rgba(78,158,148,0.08) 0%, transparent 60%),
+      linear-gradient(180deg, #0D0B08 0%, #16130D 60%, #1F1B12 100%);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 7vw, 100px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin-bottom: 60px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.6s forwards;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.8s forwards;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat .number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+
+  .hero-stat .label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 6px;
+    display: block;
+  }
+
+  .divider {
+    width: 1px;
+    background: rgba(201,168,76,0.3);
+    align-self: stretch;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 100px 40px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-full {
+    padding: 100px 40px;
+    background: var(--dark2);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .section-full .inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .section-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin-bottom: 60px;
+    line-height: 1.8;
+  }
+
+  /* ── GOLD RULE ── */
+  .gold-rule {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 32px;
+  }
+
+  /* ── CHART GRID ── */
+  .chart-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+
+  .chart-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 900px) {
+    .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .chart-card {
+    background: var(--dark3);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 4px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .chart-card:hover { border-color: rgba(201,168,76,0.4); }
+
+  .chart-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .chart-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+
+  .chart-card-sub {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .chart-card-full {
+    background: var(--dark3);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 4px;
+    padding: 40px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-card-full::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  /* ── KPI STRIP ── */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 60px;
+  }
+
+  @media (max-width: 800px) {
+    .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .kpi-item {
+    background: var(--dark3);
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+  }
+
+  .kpi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .kpi-change {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent-teal);
+    margin-bottom: 6px;
+    display: block;
+    letter-spacing: 0.05em;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ── STORY CALLOUT ── */
+  .callout {
+    background: linear-gradient(135deg, var(--dark4), var(--dark3));
+    border-left: 3px solid var(--gold);
+    padding: 32px 40px;
+    margin: 40px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    color: var(--text-main);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  .callout cite {
+    display: block;
+    margin-top: 12px;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--dark);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .footer p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 2;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .footer a { color: var(--gold); text-decoration: none; }
+
+  /* ── VEGA OVERRIDES ── */
+  .vega-embed { width: 100% !important; }
+  .vega-embed .marks { cursor: crosshair; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .scroll-reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(13,11,8,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  @media (max-width: 700px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .section, .section-full { padding: 60px 20px; }
+  }
+
+  /* annotation arrow */
+  .annotation {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-top: 12px;
+    padding-left: 16px;
+    border-left: 2px solid rgba(201,168,76,0.3);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Australia Tourism · 2025</div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#domestic">Domestic</a></li>
+    <li><a href="#international">International</a></li>
+    <li><a href="#map">Map</a></li>
+    <li><a href="#spend">Spending</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="hero-eyebrow">Tourism Research Australia · Data Visualisation 2025</div>
+  <h1>Australia's<br><em>Tourism Story</em></h1>
+  <p class="hero-subtitle">How 399 million journeys shaped one of the world's great visitor economies — a deep look at where Australians travel, who visits us, and what they spend.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="number">$192bn</span>
+      <span class="label">Total Tourism Spend</span>
+    </div>
+    <div class="divider"></div>
+    <div class="hero-stat">
+      <span class="number">9.2M</span>
+      <span class="label">International Visitors</span>
+    </div>
+    <div class="divider"></div>
+    <div class="hero-stat">
+      <span class="number">390M</span>
+      <span class="label">Domestic Trips</span>
+    </div>
+    <div class="divider"></div>
+    <div class="hero-stat">
+      <span class="number">737K</span>
+      <span class="label">Tourism Jobs</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 1 OVERVIEW ══════════════════════ -->
+<section class="section" id="overview">
+  <div class="scroll-reveal">
+    <div class="section-label">§ 01 — Snapshot</div>
+    <h2 class="section-title">A $192 billion<br><em>visitor economy</em></h2>
+    <div class="gold-rule"></div>
+    <p class="section-body">In the 12 months to December 2025, Australians and international visitors combined to spend $192.4 billion — a 7% increase year-on-year. Domestic day trips surged 19% in spend while international visitor expenditure jumped 19%, signalling a robust post-pandemic rebound across all traveller segments.</p>
+  </div>
+
+  <div class="kpi-strip scroll-reveal">
+    <div class="kpi-item">
+      <span class="kpi-value">$192.4bn</span>
+      <span class="kpi-change">▲ 7% YoY</span>
+      <span class="kpi-label">Total Tourism Spend</span>
+    </div>
+    <div class="kpi-item">
+      <span class="kpi-value">113M</span>
+      <span class="kpi-change">▲ 0.2% YoY</span>
+      <span class="kpi-label">Domestic Overnight Trips</span>
+    </div>
+    <div class="kpi-item">
+      <span class="kpi-value">277M</span>
+      <span class="kpi-change">▲ 9% YoY</span>
+      <span class="kpi-label">Domestic Day Trips</span>
+    </div>
+    <div class="kpi-item">
+      <span class="kpi-value">$81.1bn</span>
+      <span class="kpi-change">▲ 4% YoY</span>
+      <span class="kpi-label">Tourism GDP</span>
+    </div>
+  </div>
+
+  <!-- CHART 1: Spend breakdown donut-style bar -->
+  <div class="chart-grid-2 scroll-reveal">
+    <div class="chart-card">
+      <div class="chart-card-title">Tourism Spend Composition</div>
+      <div class="chart-card-sub">12 months to December 2025</div>
+      <div id="chart-spend-breakdown"></div>
+      <p class="annotation">Domestic overnight trips remain the backbone at 55% of all spend, but day trips (24%) are the fastest growing segment.</p>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">Total Traveller Spend</div>
+      <div class="chart-card-sub">Year-on-year trend 2019–2025</div>
+      <div id="chart-spend-trend"></div>
+      <p class="annotation">After the COVID-19 collapse, total spend has grown steadily, reaching a new record in 2025.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SECTION 2 DOMESTIC ══════════════════════ -->
+<div class="section-full" id="domestic">
+  <div class="inner">
+    <div class="scroll-reveal">
+      <div class="section-label">§ 02 — Domestic Tourism</div>
+      <h2 class="section-title">Where <em>Australians</em><br>choose to explore</h2>
+      <div class="gold-rule"></div>
+      <p class="section-body">From the coastal escapes of New South Wales to the red interior of the Northern Territory, 390 million domestic trips in 2025 paint a rich portrait of how Australians travel within their own remarkable country.</p>
+    </div>
+
+    <!-- CHART 2: Quarterly overnight trips by state (stacked bars) -->
+    <div class="chart-card-full scroll-reveal">
+      <div class="chart-card-title">Quarterly Overnight Trips by State — 2025</div>
+      <div class="chart-card-sub">Thousands of trips · March, June, September & December quarters</div>
+      <div id="chart-quarterly-state"></div>
+      <p class="annotation">NSW consistently leads domestic overnight travel, drawing over 10 million trips in peak quarters. Queensland's year-round appeal keeps its numbers stable across all seasons.</p>
+    </div>
+
+    <div class="chart-grid-2 scroll-reveal">
+      <!-- CHART 3: State bar chart Q4 2025 -->
+      <div class="chart-card">
+        <div class="chart-card-title">Overnight Trips by State</div>
+        <div class="chart-card-sub">December Quarter 2025 vs 2024</div>
+        <div id="chart-state-compare"></div>
+        <p class="annotation">Western Australia recorded the strongest growth (+2.2%), while Tasmania saw the sharpest decline (-4.9%).</p>
+      </div>
+      <!-- CHART 4: Purpose of domestic overnight trip -->
+      <div class="chart-card">
+        <div class="chart-card-title">Purpose of Domestic Travel</div>
+        <div class="chart-card-sub">Overnight trips, year ending Dec 2025</div>
+        <div id="chart-purpose"></div>
+        <p class="annotation">Holiday and visiting friends & relatives together account for 83% of all domestic overnight travel.</p>
+      </div>
+    </div>
+
+    <div class="callout scroll-reveal">
+      <p>"The Northern Territory's regional expenditure surged an extraordinary 34.9% year-on-year in December 2025 — the highest growth of any state or territory — as adventure tourism and cultural experiences draw more Australians to the heart of the continent."</p>
+      <cite>Source: Tourism Research Australia, Domestic Tourism Statistics, Dec Q 2025</cite>
+    </div>
+
+    <!-- CHART 5: Expenditure by type -->
+    <div class="chart-card-full scroll-reveal">
+      <div class="chart-card-title">What Domestic Overnight Travellers Spend On</div>
+      <div class="chart-card-sub">Expenditure categories · December Quarter 2025 ($M)</div>
+      <div id="chart-expenditure-type"></div>
+      <p class="annotation">Accommodation dominates at $7.5bn, followed by restaurant meals ($4.1bn) and domestic airfares ($4.2bn).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 3 INTERNATIONAL ══════════════════════ -->
+<section class="section" id="international">
+  <div class="scroll-reveal">
+    <div class="section-label">§ 03 — International Visitors</div>
+    <h2 class="section-title">The world<br><em>discovers Australia</em></h2>
+    <div class="gold-rule"></div>
+    <p class="section-body">8.9 million international visitors arrived in 2025, spending $39.2 billion. New Zealand remained our closest travel partner, while China rebounded strongly with 974,000 visitors — a 17% increase — and the UK saw a 19% surge.</p>
+  </div>
+
+  <div class="chart-grid-2 scroll-reveal">
+    <!-- CHART 6: Top countries bar -->
+    <div class="chart-card">
+      <div class="chart-card-title">Top Source Countries</div>
+      <div class="chart-card-sub">Trips ('000) · Year ending December 2025</div>
+      <div id="chart-countries"></div>
+      <p class="annotation">New Zealand, China, and the UK are Australia's top three visitor markets by trip volume.</p>
+    </div>
+    <!-- CHART 7: Spend by country -->
+    <div class="chart-card">
+      <div class="chart-card-title">Visitor Spend in Australia</div>
+      <div class="chart-card-sub">Spend in Australia ($M) · Year ending December 2025</div>
+      <div id="chart-country-spend"></div>
+      <p class="annotation">Chinese visitors generate far more spend per trip than any other nationality — $11.2bn from just 974K trips.</p>
+    </div>
+  </div>
+
+  <!-- CHART 8: Purpose of international visits -->
+  <div class="chart-card-full scroll-reveal">
+    <div class="chart-card-title">Purpose of International Visits — Trips vs Spend</div>
+    <div class="chart-card-sub">Year ending December 2025 · Trips ('000) and Spend in Australia ($M)</div>
+    <div id="chart-intl-purpose"></div>
+    <p class="annotation">Holiday visitors numbered 3.6M but education visitors — though only 540K — contributed $14.5bn in spend due to longer stays. This reflects the enormous economic value of Australia's international education sector.</p>
+  </div>
+
+  <!-- CHART 9: International spend by state -->
+  <div class="chart-grid-2 scroll-reveal">
+    <div class="chart-card">
+      <div class="chart-card-title">International Visitor Spend by State</div>
+      <div class="chart-card-sub">Year ending Dec 2025 vs 2024 ($M)</div>
+      <div id="chart-intl-state"></div>
+      <p class="annotation">NSW captured the largest share ($15bn), buoyed by Sydney's global appeal. Western Australia showed the highest growth at +29.7%.</p>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-title">International Trip Growth by Country</div>
+      <div class="chart-card-sub">Year-on-year change (%) · 2024 → 2025</div>
+      <div id="chart-country-growth"></div>
+      <p class="annotation">Hong Kong (+14.8%), Taiwan (+17.2%), and the UK (+19%) are among the fastest-growing visitor markets.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SECTION 4 MAP ══════════════════════ -->
+<div class="section-full" id="map">
+  <div class="inner">
+    <div class="scroll-reveal">
+      <div class="section-label">§ 04 — Geographic View</div>
+      <h2 class="section-title">Australia's tourism<br><em>geography</em></h2>
+      <div class="gold-rule"></div>
+      <p class="section-body">This choropleth map reveals how domestic overnight visitor spending is distributed across Australia's states and territories. The east coast dominates, but Western Australia's strong performance in 2025 reflects growing interest in its vast, extraordinary landscapes.</p>
+    </div>
+
+    <div class="chart-card-full scroll-reveal">
+      <div class="chart-card-title">Domestic Overnight Visitor Expenditure by State/Territory</div>
+      <div class="chart-card-sub">December Quarter 2025 · Regional expenditure ($M) · Darker = higher spend</div>
+      <div id="chart-map"></div>
+      <p class="annotation">NSW ($8.3bn) and VIC ($5.7bn) together represent over half of all domestic overnight expenditure. The NT, despite its small population, recorded 34.9% expenditure growth — the national standout.</p>
+    </div>
+
+    <!-- CHART 10: International visitors by state -->
+    <div class="chart-card-full scroll-reveal">
+      <div class="chart-card-title">International vs Domestic Overnight Visitor Spend by State</div>
+      <div class="chart-card-sub">Year ending December 2025 · $M · Grouped comparison</div>
+      <div id="chart-state-intl-dom"></div>
+      <p class="annotation">For every state, domestic overnight spend exceeds international spend — yet in NSW, international visitors contribute a remarkable $15bn, nearly matching domestic overnight's $8.3bn for the quarter alone.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ SECTION 5 SPENDING ══════════════════════ -->
+<section class="section" id="spend">
+  <div class="scroll-reveal">
+    <div class="section-label">§ 05 — The Spending Story</div>
+    <h2 class="section-title">How travellers<br><em>spend their dollars</em></h2>
+    <div class="gold-rule"></div>
+    <p class="section-body">Beyond trip counts, the real economic story is spending behaviour. Day trippers spent 19% more year-on-year; international visitors 19% more. Yet domestic overnight spend fell 2%, revealing a subtle shift in how Australians travel at home.</p>
+  </div>
+
+  <!-- CHART 11: Spend per trip bubble-ish scatter -->
+  <div class="chart-card-full scroll-reveal">
+    <div class="chart-card-title">Trips vs Spend — Traveller Segment Comparison</div>
+    <div class="chart-card-sub">Year ending December 2025 · Bubble size = total nights spent</div>
+    <div id="chart-bubble"></div>
+    <p class="annotation">International visitors take far fewer trips than domestic travellers but stay much longer (avg 37 nights vs 3.4 nights per overnight trip), generating disproportionately high economic impact per traveller.</p>
+  </div>
+
+  <div class="callout scroll-reveal">
+    <p>"Tourism Research Australia forecasts total tourism spend to reach $233.4 billion by 2030 — sustained by international recovery, growing Asia-Pacific travel, and the enduring appeal of Australia's natural wonders."</p>
+    <cite>Source: TRA Tourism Forecasts for Australia, 2025</cite>
+  </div>
+
+  <!-- CHART 12: Forecast -->
+  <div class="chart-card-full scroll-reveal">
+    <div class="chart-card-title">Tourism Spend Forecast 2026–2030</div>
+    <div class="chart-card-sub">Projected total travel spend in Australia (nominal $bn)</div>
+    <div id="chart-forecast"></div>
+    <p class="annotation">Tourism spend is projected to grow at 3.6–4.4% annually, reaching $233.4bn by 2030, reflecting strong structural demand from both domestic and international markets.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">Australia's Tourism Story · 2025</div>
+  <p>
+    Data sources: <a href="https://www.tra.gov.au" target="_blank">Tourism Research Australia</a> — International Visitor Survey (Dec Q 2025); Domestic Tourism Statistics (Dec Q 2025); Visitor Economy Facts &amp; Figures (May 2026); ABS Overseas Arrivals and Departures (Cat. 3401.0).<br>
+    Created by [Your Name] · FIT2179 Data Visualisation 2 · Monash University · May 2026.<br>
+    AI tools used for grammar checking and design assistance. All visualisations and analysis are original work.
+  </p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// SHARED VEGA-LITE CONFIG (dark luxury theme)
+// ═══════════════════════════════════════════════
+const C = {
+  gold: '#C9A84C',
+  goldLight: '#E8C97A',
+  cream: '#EDE4D0',
+  muted: '#9A8C6E',
+  dark: '#0D0B08',
+  dark3: '#1F1B12',
+  teal: '#4E9E94',
+  rose: '#C46E5A',
+  blue: '#5A8EBF',
+  purple: '#8E6EBF',
+  green: '#6EBF8E',
+};
+
+const BASE_CONFIG = {
+  background: 'transparent',
+  font: 'Montserrat',
+  title: { color: C.cream, font: 'Playfair Display', fontSize: 14, fontWeight: 'normal', subtitleColor: C.muted, subtitleFontSize: 11, anchor: 'start', offset: 8 },
+  axis: {
+    domainColor: 'rgba(201,168,76,0.2)',
+    gridColor: 'rgba(201,168,76,0.08)',
+    tickColor: 'rgba(201,168,76,0.2)',
+    labelColor: C.muted,
+    titleColor: C.muted,
+    labelFont: 'Montserrat',
+    titleFont: 'Montserrat',
+    labelFontSize: 11,
+    titleFontSize: 11,
+  },
+  legend: {
+    labelColor: C.muted,
+    titleColor: C.muted,
+    labelFont: 'Montserrat',
+    titleFont: 'Montserrat',
+    labelFontSize: 11,
+    titleFontSize: 11,
+    symbolStrokeWidth: 2,
+  },
+  view: { stroke: 'transparent' },
+};
+
+const EMBED_OPTS = {
+  actions: false,
+  renderer: 'svg',
+  config: BASE_CONFIG,
+};
+
+// ═══════════════════════════════════
+// CHART 1: Spend Breakdown (Donut)
+// ═══════════════════════════════════
+vegaEmbed('#chart-spend-breakdown', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 280,
+  data: {
+    values: [
+      { segment: 'Domestic Overnight', spend: 106.7, pct: 55 },
+      { segment: 'Domestic Day Trips', spend: 46.4, pct: 24 },
+      { segment: 'International', spend: 39.2, pct: 20 },
+    ]
+  },
+  layer: [
+    {
+      mark: { type: 'arc', outerRadius: 120, innerRadius: 60, padAngle: 0.03, cornerRadius: 3 },
+      encoding: {
+        theta: { field: 'spend', type: 'quantitative' },
+        color: {
+          field: 'segment',
+          type: 'nominal',
+          scale: { range: [C.gold, C.teal, C.rose] },
+          legend: { orient: 'bottom', direction: 'vertical', title: null }
+        },
+        tooltip: [
+          { field: 'segment', title: 'Segment' },
+          { field: 'spend', title: 'Spend ($bn)', format: '.1f' },
+          { field: 'pct', title: 'Share (%)', format: 'd' }
+        ]
+      }
+    },
+    {
+      mark: { type: 'text', radius: 85, fontSize: 13, fontWeight: 'bold', font: 'Playfair Display', color: C.cream },
+      encoding: {
+        theta: { field: 'spend', type: 'quantitative', stack: true },
+        text: { field: 'pct', format: 'd', type: 'quantitative' },
+        detail: { field: 'segment' }
+      }
+    }
+  ],
+  view: { stroke: null }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 2: Spend Trend 2020-2025
+// ═══════════════════════════════════
+vegaEmbed('#chart-spend-trend', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 280,
+  data: {
+    values: [
+      { year: '2020', spend: 69 },
+      { year: '2021', spend: 85 },
+      { year: '2022', spend: 118 },
+      { year: '2023', spend: 164 },
+      { year: '2024', spend: 179 },
+      { year: '2025', spend: 192.4 },
+    ]
+  },
+  layer: [
+    {
+      mark: { type: 'area', opacity: 0.15, color: C.gold, line: false },
+      encoding: {
+        x: { field: 'year', type: 'ordinal', axis: { title: null, labelAngle: 0 } },
+        y: { field: 'spend', type: 'quantitative', axis: { title: 'Total Spend ($bn)', format: '.0f' }, scale: { zero: true } },
+      }
+    },
+    {
+      mark: { type: 'line', color: C.gold, strokeWidth: 2.5, point: { color: C.gold, size: 60, filled: true } },
+      encoding: {
+        x: { field: 'year', type: 'ordinal' },
+        y: { field: 'spend', type: 'quantitative' },
+        tooltip: [
+          { field: 'year', title: 'Year' },
+          { field: 'spend', title: 'Spend ($bn)', format: '.1f' }
+        ]
+      }
+    },
+    {
+      mark: { type: 'text', dy: -14, color: C.goldLight, fontSize: 11, fontWeight: '500' },
+      encoding: {
+        x: { field: 'year', type: 'ordinal' },
+        y: { field: 'spend', type: 'quantitative' },
+        text: { field: 'spend', format: '.0f', type: 'quantitative' }
+      }
+    }
+  ]
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 3: Quarterly Overnight by State
+// ═══════════════════════════════════
+vegaEmbed('#chart-quarterly-state', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 320,
+  data: {
+    values: [
+      { state: 'NSW', quarter: 'Mar Q', trips: 9999.544 },
+      { state: 'NSW', quarter: 'Jun Q', trips: 9483.469 },
+      { state: 'NSW', quarter: 'Sep Q', trips: 9156.015 },
+      { state: 'NSW', quarter: 'Dec Q', trips: 10569.738 },
+      { state: 'VIC', quarter: 'Mar Q', trips: 8650.636 },
+      { state: 'VIC', quarter: 'Jun Q', trips: 7497.05 },
+      { state: 'VIC', quarter: 'Sep Q', trips: 7191.996 },
+      { state: 'VIC', quarter: 'Dec Q', trips: 8043.486 },
+      { state: 'QLD', quarter: 'Mar Q', trips: 5949.884 },
+      { state: 'QLD', quarter: 'Jun Q', trips: 6474.587 },
+      { state: 'QLD', quarter: 'Sep Q', trips: 6738.266 },
+      { state: 'QLD', quarter: 'Dec Q', trips: 6772.215 },
+      { state: 'WA', quarter: 'Mar Q', trips: 2503.484 },
+      { state: 'WA', quarter: 'Jun Q', trips: 2464.542 },
+      { state: 'WA', quarter: 'Sep Q', trips: 2420.925 },
+      { state: 'WA', quarter: 'Dec Q', trips: 2563.032 },
+      { state: 'SA', quarter: 'Mar Q', trips: 2099.94 },
+      { state: 'SA', quarter: 'Jun Q', trips: 1911.341 },
+      { state: 'SA', quarter: 'Sep Q', trips: 1750.964 },
+      { state: 'SA', quarter: 'Dec Q', trips: 2049.879 },
+      { state: 'TAS', quarter: 'Mar Q', trips: 869.821 },
+      { state: 'TAS', quarter: 'Jun Q', trips: 698.91 },
+      { state: 'TAS', quarter: 'Sep Q', trips: 643.022 },
+      { state: 'TAS', quarter: 'Dec Q', trips: 757.187 },
+      { state: 'ACT', quarter: 'Mar Q', trips: 546.343 },
+      { state: 'ACT', quarter: 'Jun Q', trips: 531.266 },
+      { state: 'ACT', quarter: 'Sep Q', trips: 588.204 },
+      { state: 'ACT', quarter: 'Dec Q', trips: 585.714 },
+      { state: 'NT', quarter: 'Mar Q', trips: 177.582 },
+      { state: 'NT', quarter: 'Jun Q', trips: 275.587 },
+      { state: 'NT', quarter: 'Sep Q', trips: 327.549 },
+      { state: 'NT', quarter: 'Dec Q', trips: 214.038 },
+    ]
+  },
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    x: { field: 'quarter', type: 'ordinal', title: null, sort: ['Mar Q', 'Jun Q', 'Sep Q', 'Dec Q'], axis: { labelAngle: 0 } },
+    y: { field: 'trips', type: 'quantitative', title: 'Overnight Trips (\'000)', stack: 'zero' },
+    color: {
+      field: 'state',
+      type: 'nominal',
+      scale: { range: [C.gold, C.teal, C.rose, C.blue, C.purple, C.green, '#BF8E6E', '#8EBF6E'] },
+      legend: { orient: 'right', title: 'State/Territory', titleFontSize: 11 }
+    },
+    tooltip: [
+      { field: 'state', title: 'State' },
+      { field: 'quarter', title: 'Quarter' },
+      { field: 'trips', title: 'Trips (\'000)', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 4: State Compare Dec Q 2025 vs 2024
+// ═══════════════════════════════════
+vegaEmbed('#chart-state-compare', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 320,
+  data: {
+    values: [
+      { state: 'NSW', q2024: 10592.612, q2025: 10569.738 },
+      { state: 'VIC', q2024: 8077.218, q2025: 8043.486 },
+      { state: 'QLD', q2024: 6760.98,  q2025: 6772.215 },
+      { state: 'WA',  q2024: 2508.698, q2025: 2563.032 },
+      { state: 'SA',  q2024: 2067.663, q2025: 2049.879 },
+      { state: 'TAS', q2024: 796.62,   q2025: 757.187 },
+      { state: 'ACT', q2024: 573.073,  q2025: 585.714 },
+      { state: 'NT',  q2024: 221.018,  q2025: 214.038 },
+    ]
+  },
+  transform: [
+    { fold: ['q2024', 'q2025'], as: ['year', 'trips'] }
+  ],
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    y: { field: 'state', type: 'nominal', sort: '-x', title: null },
+    x: { field: 'trips', type: 'quantitative', title: 'Trips (\'000)', axis: { format: ',.0f' } },
+    color: {
+      field: 'year',
+      type: 'nominal',
+      scale: { domain: ['q2024', 'q2025'], range: [C.muted, C.gold] },
+      legend: { title: 'Quarter', labelExpr: "datum.label === 'q2024' ? 'Dec Q 2024' : 'Dec Q 2025'" }
+    },
+    tooltip: [
+      { field: 'state', title: 'State' },
+      { field: 'year', title: 'Period', type: 'nominal' },
+      { field: 'trips', title: 'Trips (\'000)', format: ',.0f' }
+    ],
+    xOffset: { field: 'year', type: 'nominal' }
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 5: Purpose of Domestic Trips
+// ═══════════════════════════════════
+vegaEmbed('#chart-purpose', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 320,
+  data: {
+    values: [
+      { purpose: 'Holiday', dayTrips: 139.9, overnight: 50.3 },
+      { purpose: 'VFR', dayTrips: 84.4, overnight: 43.2 },
+      { purpose: 'Business', dayTrips: 21.3, overnight: 12.5 },
+      { purpose: 'Other', dayTrips: 30.1, overnight: 6.1 },
+      { purpose: 'Education', dayTrips: 1.8, overnight: 0.8 },
+    ]
+  },
+  transform: [
+    { fold: ['dayTrips', 'overnight'], as: ['type', 'trips'] }
+  ],
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    x: { field: 'purpose', type: 'nominal', title: null, sort: '-y', axis: { labelAngle: 0 } },
+    y: { field: 'trips', type: 'quantitative', title: 'Trips (million)', stack: 'zero' },
+    color: {
+      field: 'type',
+      type: 'nominal',
+      scale: { domain: ['dayTrips', 'overnight'], range: [C.teal, C.gold] },
+      legend: { title: 'Trip Type', labelExpr: "datum.label === 'dayTrips' ? 'Day Trips' : 'Overnight'" }
+    },
+    tooltip: [
+      { field: 'purpose', title: 'Purpose' },
+      { field: 'type', title: 'Type' },
+      { field: 'trips', title: 'Trips (M)', format: '.1f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 6: Expenditure types overnight
+// ═══════════════════════════════════
+vegaEmbed('#chart-expenditure-type', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 300,
+  data: {
+    values: [
+      { item: 'Accommodation', spend: 7492.193 },
+      { item: 'Airfares', spend: 4219.63 },
+      { item: 'Restaurants & Meals', spend: 4072.02 },
+      { item: 'Shopping & Gifts', spend: 1488.647 },
+      { item: 'Groceries', spend: 1595.342 },
+      { item: 'Long Distance Transport', spend: 1009.333 },
+      { item: 'Petrol', spend: 2968.887 },
+      { item: 'Alcohol & Drinks', spend: 1253.091 },
+      { item: 'Rental Vehicles', spend: 419.512 },
+      { item: 'Entertainment', spend: 650.484 },
+    ].sort((a,b) => b.spend - a.spend)
+  },
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    x: { field: 'item', type: 'nominal', sort: '-y', title: null, axis: { labelAngle: -35, labelLimit: 120 } },
+    y: { field: 'spend', type: 'quantitative', title: 'Expenditure ($M)', axis: { format: ',.0f' } },
+    color: {
+      field: 'spend', type: 'quantitative',
+      scale: { scheme: 'goldorange', reverse: false, range: ['#4E9E94', '#C9A84C', '#E8C97A'] },
+      legend: null
+    },
+    tooltip: [
+      { field: 'item', title: 'Category' },
+      { field: 'spend', title: 'Spend ($M)', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 7: Top source countries
+// ═══════════════════════════════════
+const countryData = [
+  { country: 'New Zealand', trips: 1303, spend: 2410 },
+  { country: 'China', trips: 974, spend: 11246 },
+  { country: 'UK', trips: 721, spend: 2870 },
+  { country: 'USA', trips: 697, spend: 2396 },
+  { country: 'India', trips: 429, spend: 1835 },
+  { country: 'Singapore', trips: 386, spend: 1122 },
+  { country: 'Japan', trips: 385, spend: 1617 },
+  { country: 'Korea', trips: 363, spend: 1445 },
+  { country: 'Indonesia', trips: 218, spend: 976 },
+  { country: 'Philippines', trips: 179, spend: 608 },
+  { country: 'Taiwan', trips: 175, spend: 978 },
+  { country: 'Hong Kong', trips: 228, spend: 1128 },
+  { country: 'Canada', trips: 161, spend: 665 },
+  { country: 'France', trips: 139, spend: 925 },
+  { country: 'Germany', trips: 169, spend: 685 },
+];
+
+vegaEmbed('#chart-countries', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 320,
+  data: { values: countryData },
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    y: { field: 'country', type: 'nominal', sort: '-x', title: null, axis: { labelLimit: 100 } },
+    x: { field: 'trips', type: 'quantitative', title: 'Trips (\'000)', axis: { format: ',.0f' } },
+    color: {
+      field: 'trips', type: 'quantitative',
+      scale: { range: ['rgba(201,168,76,0.4)', '#C9A84C'] },
+      legend: null
+    },
+    tooltip: [
+      { field: 'country', title: 'Country' },
+      { field: 'trips', title: 'Trips (\'000)', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 8: Country spend
+// ═══════════════════════════════════
+vegaEmbed('#chart-country-spend', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 320,
+  data: { values: countryData },
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    y: { field: 'country', type: 'nominal', sort: '-x', title: null, axis: { labelLimit: 100 } },
+    x: { field: 'spend', type: 'quantitative', title: 'Spend in Australia ($M)', axis: { format: ',.0f' } },
+    color: {
+      field: 'spend', type: 'quantitative',
+      scale: { range: ['rgba(78,158,148,0.4)', '#4E9E94'] },
+      legend: null
+    },
+    tooltip: [
+      { field: 'country', title: 'Country' },
+      { field: 'spend', title: 'Spend ($M)', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 9: International purpose trips vs spend
+// ═══════════════════════════════════
+vegaEmbed('#chart-intl-purpose', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 300,
+  data: {
+    values: [
+      { purpose: 'Holiday', trips: 3582.9, spend: 12922 },
+      { purpose: 'VFR', trips: 2780.0, spend: 5445 },
+      { purpose: 'Education', trips: 539.7, spend: 14484 },
+      { purpose: 'Employment', trips: 349.2, spend: 3681 },
+      { purpose: 'Business', trips: 758.3, spend: 1936 },
+      { purpose: 'Other', trips: 262.3, spend: 723 },
+    ]
+  },
+  transform: [
+    { fold: ['trips', 'spend'], as: ['metric', 'value'] }
+  ],
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    x: { field: 'purpose', type: 'nominal', sort: { field: 'trips', order: 'descending' }, title: null, axis: { labelAngle: 0 } },
+    y: { field: 'value', type: 'quantitative', title: 'Value', axis: { format: ',.0f' } },
+    color: {
+      field: 'metric', type: 'nominal',
+      scale: { domain: ['trips', 'spend'], range: [C.gold, C.teal] },
+      legend: { title: 'Metric', labelExpr: "datum.label === 'trips' ? 'Trips (\'000)' : 'Spend ($M)'" }
+    },
+    xOffset: { field: 'metric', type: 'nominal' },
+    tooltip: [
+      { field: 'purpose', title: 'Purpose' },
+      { field: 'metric', title: 'Metric' },
+      { field: 'value', title: 'Value', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 10: International spend by state
+// ═══════════════════════════════════
+vegaEmbed('#chart-intl-state', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 300,
+  data: {
+    values: [
+      { state: 'NSW', spend2024: 12025, spend2025: 15040 },
+      { state: 'VIC', spend2024: 9046, spend2025: 9676 },
+      { state: 'QLD', spend2024: 6220, spend2025: 7485 },
+      { state: 'WA',  spend2024: 2625, spend2025: 3405 },
+      { state: 'SA',  spend2024: 1348, spend2025: 1761 },
+      { state: 'TAS', spend2024: 551, spend2025: 712 },
+      { state: 'NT',  spend2024: 468, spend2025: 527 },
+      { state: 'ACT', spend2024: 627, spend2025: 587 },
+    ]
+  },
+  transform: [{ fold: ['spend2024', 'spend2025'], as: ['year', 'spend'] }],
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    y: { field: 'state', type: 'nominal', sort: '-x', title: null },
+    x: { field: 'spend', type: 'quantitative', title: 'Intl Visitor Spend ($M)', axis: { format: ',.0f' } },
+    color: {
+      field: 'year', type: 'nominal',
+      scale: { domain: ['spend2024', 'spend2025'], range: [C.muted, C.teal] },
+      legend: { title: null, labelExpr: "datum.label === 'spend2024' ? '2024' : '2025'" }
+    },
+    xOffset: { field: 'year' },
+    tooltip: [
+      { field: 'state', title: 'State' },
+      { field: 'year', title: 'Year' },
+      { field: 'spend', title: 'Spend ($M)', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 11: Country growth rates
+// ═══════════════════════════════════
+vegaEmbed('#chart-country-growth', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 300,
+  data: {
+    values: [
+      { country: 'Hong Kong', growth: 14.8 },
+      { country: 'Taiwan', growth: 17.2 },
+      { country: 'UK', growth: 19.0 },
+      { country: 'China', growth: 17.4 },
+      { country: 'Italy', growth: 17.5 },
+      { country: 'Philippines', growth: 9.2 },
+      { country: 'Indonesia', growth: 8.0 },
+      { country: 'Japan', growth: 6.5 },
+      { country: 'Korea', growth: 6.1 },
+      { country: 'Singapore', growth: 6.9 },
+      { country: 'India', growth: 1.9 },
+      { country: 'Malaysia', growth: 5.4 },
+      { country: 'USA', growth: 4.2 },
+      { country: 'Canada', growth: 4.5 },
+      { country: 'New Zealand', growth: 3.4 },
+    ]
+  },
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    y: { field: 'country', type: 'nominal', sort: '-x', title: null, axis: { labelLimit: 100 } },
+    x: { field: 'growth', type: 'quantitative', title: 'YoY Growth (%)', axis: { format: '.1f' } },
+    color: {
+      field: 'growth', type: 'quantitative',
+      scale: { range: [C.teal, C.gold] },
+      legend: null
+    },
+    tooltip: [
+      { field: 'country', title: 'Country' },
+      { field: 'growth', title: 'Growth (%)', format: '.1f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 12: CHOROPLETH MAP — Australia states
+// Uses TopoJSON from a public CDN
+// ═══════════════════════════════════
+const stateSpendData = [
+  { state: 'New South Wales', id: 'NSW', spend: 8263.313, intlSpend: 15039, trips: 10569.738 },
+  { state: 'Victoria', id: 'VIC', spend: 5707.574, intlSpend: 9676, trips: 8043.486 },
+  { state: 'Queensland', id: 'QLD', spend: 6957.188, intlSpend: 7485, trips: 6772.215 },
+  { state: 'Western Australia', id: 'WA', spend: 2867.25, intlSpend: 3405, trips: 2563.032 },
+  { state: 'South Australia', id: 'SA', spend: 1733.669, intlSpend: 1761, trips: 2049.879 },
+  { state: 'Tasmania', id: 'TAS', spend: 809.602, intlSpend: 712, trips: 757.187 },
+  { state: 'Northern Territory', id: 'NT', spend: 386.857, intlSpend: 527, trips: 214.038 },
+  { state: 'Australian Capital Territory', id: 'ACT', spend: 548.783, intlSpend: 587, trips: 585.714 },
+];
+
+vegaEmbed('#chart-map', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 460,
+  projection: { type: 'mercator' },
+  layer: [
+    {
+      data: {
+        url: 'https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson',
+        format: { type: 'json', property: 'features' }
+      },
+      transform: [
+        {
+          lookup: 'properties.STATE_NAME',
+          from: {
+            data: { values: stateSpendData },
+            key: 'state',
+            fields: ['spend', 'trips', 'id', 'intlSpend']
+          }
+        }
+      ],
+      mark: { type: 'geoshape', stroke: 'rgba(201,168,76,0.4)', strokeWidth: 1 },
+      encoding: {
+        color: {
+          field: 'spend',
+          type: 'quantitative',
+          scale: { scheme: 'goldorange', reverse: false, range: ['#1F1B12', '#C9A84C'] },
+          legend: {
+            title: 'Domestic Spend ($M)',
+            orient: 'bottom-right',
+            gradientLength: 140,
+            gradientThickness: 10,
+            titleFontSize: 10,
+            labelFontSize: 10,
+            direction: 'horizontal',
+          }
+        },
+        tooltip: [
+          { field: 'id', title: 'State' },
+          { field: 'spend', title: 'Dom. Overnight Spend ($M)', format: ',.0f' },
+          { field: 'trips', title: 'Dom. Overnight Trips (\'000)', format: ',.0f' },
+          { field: 'intlSpend', title: 'Intl Visitor Spend ($M)', format: ',.0f' }
+        ]
+      }
+    },
+    {
+      data: {
+        url: 'https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson',
+        format: { type: 'json', property: 'features' }
+      },
+      transform: [
+        {
+          lookup: 'properties.STATE_NAME',
+          from: {
+            data: { values: stateSpendData },
+            key: 'state',
+            fields: ['id', 'spend']
+          }
+        },
+        { filter: 'datum.id != null' }
+      ],
+      mark: { type: 'text', fontSize: 12, fontWeight: 'bold', font: 'Montserrat', color: '#EDE4D0', align: 'center' },
+      encoding: {
+        longitude: { field: 'geometry.coordinates[0]', type: 'quantitative' },
+        latitude: { field: 'geometry.coordinates[1]', type: 'quantitative' },
+        text: { field: 'id', type: 'nominal' }
+      }
+    }
+  ]
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 13: State intl + domestic grouped
+// ═══════════════════════════════════
+vegaEmbed('#chart-state-intl-dom', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 300,
+  data: {
+    values: stateSpendData.map(d => [
+      { state: d.id, type: 'Domestic Overnight', spend: d.spend },
+      { state: d.id, type: 'International', spend: d.intlSpend }
+    ]).flat()
+  },
+  mark: { type: 'bar', cornerRadiusTopLeft: 2, cornerRadiusTopRight: 2 },
+  encoding: {
+    x: { field: 'state', type: 'nominal', sort: { field: 'spend', order: 'descending' }, title: null, axis: { labelAngle: 0 } },
+    y: { field: 'spend', type: 'quantitative', title: 'Spend ($M)', axis: { format: ',.0f' } },
+    color: {
+      field: 'type', type: 'nominal',
+      scale: { domain: ['Domestic Overnight', 'International'], range: [C.gold, C.teal] },
+      legend: { title: null }
+    },
+    xOffset: { field: 'type' },
+    tooltip: [
+      { field: 'state', title: 'State' },
+      { field: 'type', title: 'Visitor Type' },
+      { field: 'spend', title: 'Spend ($M)', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 14: Bubble — trips vs spend
+// ═══════════════════════════════════
+vegaEmbed('#chart-bubble', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 340,
+  data: {
+    values: [
+      { segment: 'Dom. Day Trips',      trips: 277.4, spend: 46.4,  nights: 0,     spendPerTrip: 167 },
+      { segment: 'Dom. Overnight',      trips: 113.0, spend: 106.7, nights: 381.2, spendPerTrip: 944 },
+      { segment: 'International',       trips: 8.9,   spend: 39.2,  nights: 312.7, spendPerTrip: 4404 },
+    ]
+  },
+  mark: { type: 'point', filled: true, opacity: 0.85 },
+  encoding: {
+    x: { field: 'trips', type: 'quantitative', title: 'Number of Trips (million)', axis: { format: '.0f' } },
+    y: { field: 'spend', type: 'quantitative', title: 'Total Spend ($bn)' },
+    size: {
+      field: 'nights', type: 'quantitative',
+      scale: { range: [400, 5000] },
+      legend: { title: 'Total Nights (M)', orient: 'bottom-right', titleFontSize: 10 }
+    },
+    color: {
+      field: 'segment', type: 'nominal',
+      scale: { range: [C.teal, C.gold, C.rose] },
+      legend: { title: 'Traveller Type' }
+    },
+    tooltip: [
+      { field: 'segment', title: 'Segment' },
+      { field: 'trips', title: 'Trips (M)', format: '.1f' },
+      { field: 'spend', title: 'Spend ($bn)', format: '.1f' },
+      { field: 'nights', title: 'Nights (M)', format: '.1f' },
+      { field: 'spendPerTrip', title: 'Spend per Trip ($)', format: ',.0f' }
+    ]
+  }
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 15: Forecast 2026–2030
+// ═══════════════════════════════════
+vegaEmbed('#chart-forecast', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 280,
+  data: {
+    values: [
+      { year: '2025 (actual)', spend: 192.4, type: 'Actual' },
+      { year: '2026', spend: 198.4, type: 'Forecast' },
+      { year: '2027', spend: 207.0, type: 'Forecast' },
+      { year: '2028', spend: 216.0, type: 'Forecast' },
+      { year: '2029', spend: 224.8, type: 'Forecast' },
+      { year: '2030', spend: 233.4, type: 'Forecast' },
+    ]
+  },
+  layer: [
+    {
+      mark: { type: 'area', opacity: 0.1, color: C.gold },
+      encoding: {
+        x: { field: 'year', type: 'ordinal', title: null, axis: { labelAngle: 0 } },
+        y: { field: 'spend', type: 'quantitative', title: 'Total Spend ($bn)', scale: { domain: [150, 250] } }
+      }
+    },
+    {
+      mark: { type: 'line', strokeWidth: 2.5, point: { filled: true, size: 60 }, strokeDash: [0, 0] },
+      encoding: {
+        x: { field: 'year', type: 'ordinal' },
+        y: { field: 'spend', type: 'quantitative', scale: { domain: [150, 250] } },
+        color: {
+          field: 'type', type: 'nominal',
+          scale: { domain: ['Actual', 'Forecast'], range: [C.gold, C.teal] },
+          legend: { title: null }
+        },
+        tooltip: [
+          { field: 'year', title: 'Year' },
+          { field: 'spend', title: 'Spend ($bn)', format: '.1f' },
+          { field: 'type', title: 'Type' }
+        ]
+      }
+    },
+    {
+      mark: { type: 'text', dy: -14, fontSize: 12, fontWeight: '500' },
+      encoding: {
+        x: { field: 'year', type: 'ordinal' },
+        y: { field: 'spend', type: 'quantitative' },
+        text: { field: 'spend', format: '.0f', type: 'quantitative' },
+        color: {
+          field: 'type', type: 'nominal',
+          scale: { domain: ['Actual', 'Forecast'], range: [C.goldLight, C.teal] },
+          legend: null
+        }
+      }
+    }
+  ]
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
