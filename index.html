@@ -664,22 +664,6 @@
       <div id="chart-state-intl-dom"></div>
       <p class="annotation">For every state, domestic overnight spend exceeds international spend — yet in NSW, international visitors contribute a remarkable $15bn, nearly matching domestic overnight's $8.3bn for the quarter alone.</p>
     </div>
-
-    <!-- FLOW MAP: International visitor origins -->
-    <div class="chart-card-full scroll-reveal">
-      <div class="chart-card-title">Where International Visitors Come From</div>
-      <div class="chart-card-sub">Top source countries · Flow map showing visitor arrivals to Australia · Year ending December 2025</div>
-      <div id="chart-flow-map"></div>
-      <p class="annotation">New Zealand and China dominate visitor flows. The size of each circle represents the number of visitors — China's 974K visitors generate the highest spend despite fewer trips than New Zealand.</p>
-    </div>
-
-    <!-- DUMBBELL: State spend change 2024 to 2025 -->
-    <div class="chart-card-full scroll-reveal">
-      <div class="chart-card-title">International Visitor Spend Growth by State</div>
-      <div class="chart-card-sub">2024 → 2025 · Each line shows the change in spending ($M)</div>
-      <div id="chart-dumbbell"></div>
-      <p class="annotation">Every state recorded higher international visitor spending in 2025. Western Australia saw the biggest leap — up $780M — while NSW added $3bn, cementing its position as Australia's premier international visitor destination.</p>
-    </div>
   </div>
 </div>
 
@@ -719,8 +703,8 @@
   <div class="footer-logo">Australia's Tourism Story · 2025</div>
   <p>
     Data sources: <a href="https://www.tra.gov.au" target="_blank">Tourism Research Australia</a> — International Visitor Survey (Dec Q 2025); Domestic Tourism Statistics (Dec Q 2025); Visitor Economy Facts &amp; Figures (May 2026); ABS Overseas Arrivals and Departures (Cat. 3401.0).<br>
-    Created by [Your Name] · FIT2179 Data Visualisation 2 · Monash University · May 2026.<br>
-    AI tools used for grammar checking and design assistance. All visualisations and analysis are original work.
+    Created by alexis low · FIT2179 Data Visualisation 2 · Monash University <br>
+    AI tools used 
   </p>
 </footer>
 
@@ -1403,7 +1387,6 @@ vegaEmbed('#chart-forecast', {
       { year: '2026', spend: 198.4, type: 'Forecast' },
       { year: '2027', spend: 207.0, type: 'Forecast' },
       { year: '2028', spend: 216.0, type: 'Forecast' },
-      { year: '2029', spend: 224.8, type: 'Forecast' },
       { year: '2030', spend: 233.4, type: 'Forecast' },
     ]
   },
@@ -1436,140 +1419,6 @@ vegaEmbed('#chart-forecast', {
           scale: { domain: ['Actual', 'Forecast'], range: [C.goldLight, C.teal] },
           legend: null
         }
-      }
-    }
-  ]
-}, EMBED_OPTS);
-
-// ═══════════════════════════════════
-// FLOW MAP: International visitor origins
-// Uses a world map with sized circles on source countries
-// ═══════════════════════════════════
-vegaEmbed('#chart-flow-map', {
-  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-  width: 'container',
-  height: 420,
-  projection: { type: 'equalEarth' },
-  layer: [
-    {
-      data: {
-        url: 'https://cdn.jsdelivr.net/npm/vega-datasets@2/data/world-110m.json',
-        format: { type: 'topojson', feature: 'countries' }
-      },
-      mark: { type: 'geoshape', fill: '#1F1B12', stroke: 'rgba(201,168,76,0.2)', strokeWidth: 0.5 }
-    },
-    {
-      data: {
-        values: [
-          { country: 'New Zealand',  lon: 174.8, lat: -40.9, trips: 1303, spend: 2410,  color: '#C9A84C' },
-          { country: 'China',        lon: 104.2, lat: 35.9,  trips: 974,  spend: 11246, color: '#C46E5A' },
-          { country: 'UK',           lon: -3.4,  lat: 55.4,  trips: 721,  spend: 2870,  color: '#4E9E94' },
-          { country: 'USA',          lon: -99.1, lat: 39.4,  trips: 697,  spend: 2396,  color: '#5A8EBF' },
-          { country: 'India',        lon: 78.9,  lat: 20.6,  trips: 429,  spend: 1835,  color: '#8E6EBF' },
-          { country: 'Singapore',    lon: 103.8, lat: 1.3,   trips: 386,  spend: 1122,  color: '#C9A84C' },
-          { country: 'Japan',        lon: 138.3, lat: 36.2,  trips: 385,  spend: 1617,  color: '#4E9E94' },
-          { country: 'Korea',        lon: 127.8, lat: 35.9,  trips: 363,  spend: 1445,  color: '#C46E5A' },
-          { country: 'Indonesia',    lon: 113.9, lat: -0.8,  trips: 218,  spend: 976,   color: '#5A8EBF' },
-          { country: 'Hong Kong',    lon: 114.2, lat: 22.3,  trips: 228,  spend: 1128,  color: '#8E6EBF' },
-          { country: 'Germany',      lon: 10.5,  lat: 51.2,  trips: 169,  spend: 685,   color: '#C9A84C' },
-          { country: 'Canada',       lon: -96.8, lat: 56.1,  trips: 161,  spend: 665,   color: '#4E9E94' },
-          { country: 'France',       lon: 2.2,   lat: 46.2,  trips: 139,  spend: 925,   color: '#C46E5A' },
-          { country: 'Malaysia',     lon: 109.7, lat: 4.2,   trips: 194,  spend: 705,   color: '#5A8EBF' },
-          { country: 'Taiwan',       lon: 120.9, lat: 23.7,  trips: 175,  spend: 978,   color: '#8E6EBF' },
-          { country: 'Australia',    lon: 133.8, lat: -25.3, trips: 0,    spend: 0,     color: '#C9A84C' },
-        ]
-      },
-      layer: [
-        {
-          mark: { type: 'circle', opacity: 0.75, stroke: 'rgba(255,255,255,0.3)', strokeWidth: 1 },
-          encoding: {
-            longitude: { field: 'lon', type: 'quantitative' },
-            latitude:  { field: 'lat', type: 'quantitative' },
-            size: {
-              field: 'trips', type: 'quantitative',
-              scale: { range: [0, 4000] },
-              legend: { title: 'Visitors ('000)', orient: 'bottom-left', titleFontSize: 10, labelFontSize: 10, gradientLength: 80 }
-            },
-            color: { field: 'color', type: 'nominal', scale: null, legend: null },
-            tooltip: [
-              { field: 'country', title: 'Country' },
-              { field: 'trips', title: 'Visitors ('000)', format: ',.0f' },
-              { field: 'spend', title: 'Spend in AU ($M)', format: ',.0f' }
-            ]
-          }
-        },
-        {
-          transform: [{ filter: 'datum.trips > 300' }],
-          mark: { type: 'text', dy: -14, fontSize: 10, fontWeight: '500', font: 'Montserrat', color: '#EDE4D0' },
-          encoding: {
-            longitude: { field: 'lon', type: 'quantitative' },
-            latitude:  { field: 'lat', type: 'quantitative' },
-            text: { field: 'country', type: 'nominal' }
-          }
-        }
-      ]
-    }
-  ]
-}, EMBED_OPTS);
-
-// ═══════════════════════════════════
-// DUMBBELL: State intl spend 2024 vs 2025
-// ═══════════════════════════════════
-const dumbbellData = [
-  { state: 'NSW', y2024: 12025, y2025: 15040 },
-  { state: 'VIC', y2024: 9046,  y2025: 9676  },
-  { state: 'QLD', y2024: 6220,  y2025: 7485  },
-  { state: 'WA',  y2024: 2625,  y2025: 3405  },
-  { state: 'SA',  y2024: 1348,  y2025: 1761  },
-  { state: 'TAS', y2024: 551,   y2025: 712   },
-  { state: 'NT',  y2024: 468,   y2025: 527   },
-  { state: 'ACT', y2024: 627,   y2025: 587   },
-];
-
-vegaEmbed('#chart-dumbbell', {
-  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-  width: 'container',
-  height: 300,
-  data: { values: dumbbellData },
-  layer: [
-    {
-      mark: { type: 'rule', strokeWidth: 2.5, color: 'rgba(201,168,76,0.35)' },
-      encoding: {
-        y:  { field: 'state', type: 'nominal', sort: '-x', title: null, axis: { labelLimit: 60 } },
-        x:  { field: 'y2024', type: 'quantitative', title: 'International Visitor Spend ($M)', axis: { format: ',.0f' } },
-        x2: { field: 'y2025' }
-      }
-    },
-    {
-      mark: { type: 'point', filled: true, size: 120, opacity: 1 },
-      encoding: {
-        y: { field: 'state', type: 'nominal', sort: '-x' },
-        x: { field: 'y2024', type: 'quantitative' },
-        color: { value: '#9A8C6E' },
-        tooltip: [
-          { field: 'state', title: 'State' },
-          { field: 'y2024', title: '2024 Spend ($M)', format: ',.0f' }
-        ]
-      }
-    },
-    {
-      mark: { type: 'point', filled: true, size: 120, opacity: 1 },
-      encoding: {
-        y: { field: 'state', type: 'nominal', sort: '-x' },
-        x: { field: 'y2025', type: 'quantitative' },
-        color: { value: '#C9A84C' },
-        tooltip: [
-          { field: 'state', title: 'State' },
-          { field: 'y2025', title: '2025 Spend ($M)', format: ',.0f' }
-        ]
-      }
-    },
-    {
-      mark: { type: 'text', dx: 10, fontSize: 11, fontWeight: '500', color: '#C9A84C', align: 'left' },
-      encoding: {
-        y: { field: 'state', type: 'nominal', sort: '-x' },
-        x: { field: 'y2025', type: 'quantitative' },
-        text: { field: 'y2025', type: 'quantitative', format: ',.0f' }
       }
     }
   ]
