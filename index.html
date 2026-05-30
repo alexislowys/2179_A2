@@ -657,6 +657,23 @@
       <p class="annotation">NSW ($8.3bn) and VIC ($5.7bn) together represent over half of all domestic overnight expenditure. The NT, despite its small population, recorded 34.9% expenditure growth — the national standout.</p>
     </div>
 
+
+    <!-- CHART 10: Proportional dot map -->
+    <div class="chart-card-full scroll-reveal">
+      <div class="chart-card-title">Tourism Spend Hotspots</div>
+      <div class="chart-card-sub">Dot size = domestic spend · colour = international spend</div>
+      <div id="chart-dot-map"></div>
+      <p class="annotation">Bigger circles show where domestic tourism spending is concentrated, while colour shows international visitor spend. This adds a proportional symbol map, so the geography section is not only a choropleth.</p>
+    </div>
+
+    <!-- CHART 11: Tile / bin-style map -->
+    <div class="chart-card-full scroll-reveal">
+      <div class="chart-card-title">State Tourism Tile Map</div>
+      <div class="chart-card-sub">Each tile represents one state or territory · colour = domestic spend</div>
+      <div id="chart-tile-map"></div>
+      <p class="annotation">The tile layout makes small territories like ACT and NT easier to compare because every state gets equal visual space.</p>
+    </div>
+
     <!-- CHART 10: International visitors by state -->
     <div class="chart-card-full scroll-reveal">
       <div class="chart-card-title">International vs Domestic Overnight Visitor Spend by State</div>
@@ -1291,6 +1308,131 @@ vegaEmbed('#chart-map', {
         longitude: { field: 'geometry.coordinates[0]', type: 'quantitative' },
         latitude: { field: 'geometry.coordinates[1]', type: 'quantitative' },
         text: { field: 'id', type: 'nominal' }
+      }
+    }
+  ]
+}, EMBED_OPTS);
+
+
+// ═══════════════════════════════════
+// CHART 13: PROPORTIONAL DOT MAP
+// Dot size = domestic spend; colour = international spend
+// ═══════════════════════════════════
+const statePointData = [
+  { id: 'NSW', state: 'New South Wales', lon: 147.0, lat: -32.5, spend: 8263.313, intlSpend: 15039, trips: 10569.738 },
+  { id: 'VIC', state: 'Victoria', lon: 144.5, lat: -37.0, spend: 5707.574, intlSpend: 9676, trips: 8043.486 },
+  { id: 'QLD', state: 'Queensland', lon: 145.0, lat: -22.5, spend: 6957.188, intlSpend: 7485, trips: 6772.215 },
+  { id: 'WA', state: 'Western Australia', lon: 121.5, lat: -26.0, spend: 2867.25, intlSpend: 3405, trips: 2563.032 },
+  { id: 'SA', state: 'South Australia', lon: 135.0, lat: -30.0, spend: 1733.669, intlSpend: 1761, trips: 2049.879 },
+  { id: 'TAS', state: 'Tasmania', lon: 146.5, lat: -42.0, spend: 809.602, intlSpend: 712, trips: 757.187 },
+  { id: 'NT', state: 'Northern Territory', lon: 133.0, lat: -19.5, spend: 386.857, intlSpend: 527, trips: 214.038 },
+  { id: 'ACT', state: 'Australian Capital Territory', lon: 149.1, lat: -35.3, spend: 548.783, intlSpend: 587, trips: 585.714 }
+];
+
+vegaEmbed('#chart-dot-map', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 460,
+  projection: { type: 'mercator' },
+  layer: [
+    {
+      data: {
+        url: 'https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson',
+        format: { type: 'json', property: 'features' }
+      },
+      mark: { type: 'geoshape', fill: '#1F1B12', stroke: 'rgba(201,168,76,0.35)', strokeWidth: 1 }
+    },
+    {
+      data: { values: statePointData },
+      mark: { type: 'circle', opacity: 0.86, stroke: '#EDE4D0', strokeWidth: 1 },
+      encoding: {
+        longitude: { field: 'lon', type: 'quantitative' },
+        latitude: { field: 'lat', type: 'quantitative' },
+        size: {
+          field: 'spend',
+          type: 'quantitative',
+          scale: { range: [120, 3200] },
+          legend: { title: 'Domestic spend ($M)' }
+        },
+        color: {
+          field: 'intlSpend',
+          type: 'quantitative',
+          scale: { range: ['#4E9E94', '#C9A84C'] },
+          legend: { title: 'International spend ($M)' }
+        },
+        tooltip: [
+          { field: 'state', title: 'State' },
+          { field: 'spend', title: 'Domestic spend ($M)', format: ',.0f' },
+          { field: 'intlSpend', title: 'International spend ($M)', format: ',.0f' },
+          { field: 'trips', title: 'Domestic trips (\'000)', format: ',.0f' }
+        ]
+      }
+    },
+    {
+      data: { values: statePointData },
+      mark: { type: 'text', dy: -18, fontSize: 11, fontWeight: 'bold', font: 'Montserrat', color: '#EDE4D0' },
+      encoding: {
+        longitude: { field: 'lon', type: 'quantitative' },
+        latitude: { field: 'lat', type: 'quantitative' },
+        text: { field: 'id' }
+      }
+    }
+  ]
+}, EMBED_OPTS);
+
+// ═══════════════════════════════════
+// CHART 14: TILE / BIN-STYLE MAP
+// Equal-area state comparison for easier reading
+// ═══════════════════════════════════
+const tileMapData = [
+  { id: 'WA', state: 'Western Australia', x: 1, y: 2, spend: 2867.25, intlSpend: 3405 },
+  { id: 'NT', state: 'Northern Territory', x: 2, y: 1, spend: 386.857, intlSpend: 527 },
+  { id: 'SA', state: 'South Australia', x: 2, y: 2, spend: 1733.669, intlSpend: 1761 },
+  { id: 'QLD', state: 'Queensland', x: 3, y: 1, spend: 6957.188, intlSpend: 7485 },
+  { id: 'NSW', state: 'New South Wales', x: 3, y: 2, spend: 8263.313, intlSpend: 15039 },
+  { id: 'VIC', state: 'Victoria', x: 3, y: 3, spend: 5707.574, intlSpend: 9676 },
+  { id: 'ACT', state: 'Australian Capital Territory', x: 4, y: 2, spend: 548.783, intlSpend: 587 },
+  { id: 'TAS', state: 'Tasmania', x: 3, y: 4, spend: 809.602, intlSpend: 712 }
+];
+
+vegaEmbed('#chart-tile-map', {
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  width: 'container',
+  height: 360,
+  data: { values: tileMapData },
+  layer: [
+    {
+      mark: { type: 'rect', cornerRadius: 8, stroke: 'rgba(201,168,76,0.45)', strokeWidth: 1.2 },
+      encoding: {
+        x: { field: 'x', type: 'ordinal', axis: null },
+        y: { field: 'y', type: 'ordinal', axis: null, sort: 'ascending' },
+        color: {
+          field: 'spend',
+          type: 'quantitative',
+          scale: { range: ['#1F1B12', '#C9A84C'] },
+          legend: { title: 'Domestic spend ($M)' }
+        },
+        tooltip: [
+          { field: 'state', title: 'State' },
+          { field: 'spend', title: 'Domestic spend ($M)', format: ',.0f' },
+          { field: 'intlSpend', title: 'International spend ($M)', format: ',.0f' }
+        ]
+      }
+    },
+    {
+      mark: { type: 'text', fontSize: 18, fontWeight: 'bold', font: 'Montserrat', color: '#EDE4D0' },
+      encoding: {
+        x: { field: 'x', type: 'ordinal' },
+        y: { field: 'y', type: 'ordinal' },
+        text: { field: 'id' }
+      }
+    },
+    {
+      mark: { type: 'text', dy: 24, fontSize: 11, font: 'Montserrat', color: '#EDE4D0' },
+      encoding: {
+        x: { field: 'x', type: 'ordinal' },
+        y: { field: 'y', type: 'ordinal' },
+        text: { field: 'spend', type: 'quantitative', format: ',.0f' }
       }
     }
   ]
